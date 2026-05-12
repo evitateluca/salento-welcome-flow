@@ -4,6 +4,7 @@ import { WifiCard } from "@/components/WifiCard";
 import { MapSpots } from "@/components/MapSpots";
 import { HouseManual } from "@/components/HouseManual";
 import { Contacts } from "@/components/Contacts";
+import { QuickAccess } from "@/components/QuickAccess";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -32,7 +33,7 @@ function Index() {
     <div className="min-h-screen bg-background pb-16">
       <WelcomeAnimation guestName={GUEST_NAME} />
 
-      <div className="pt-3">
+      <div id="wifi" className="pt-3 scroll-mt-4">
         <WifiCard />
       </div>
 
@@ -51,10 +52,17 @@ function Index() {
         <div className="mx-auto mt-7 h-px w-16" style={{ backgroundColor: "var(--olive)" }} />
       </header>
 
-      <main className="mt-10 space-y-12">
-        <MapSpots />
-        <HouseManual />
-        <Contacts />
+      <main className="mt-8 space-y-12">
+        <QuickAccess />
+        <div id="mappa" className="scroll-mt-20">
+          <MapSpots />
+        </div>
+        <div id="manuale" className="scroll-mt-20">
+          <HouseManual />
+        </div>
+        <div id="contatti" className="scroll-mt-20">
+          <Contacts />
+        </div>
       </main>
 
       <footer className="mt-16 px-6 text-center">

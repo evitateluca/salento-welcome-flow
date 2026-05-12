@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MapPin, ShoppingBasket, Cross, UtensilsCrossed, Waves, Sparkles, ExternalLink } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -32,6 +32,16 @@ const TYPE_META: Record<Spot["type"], { icon: LucideIcon; color: string }> = {
 
 export function MapSpots() {
   const [tab, setTab] = useState<Category>("essenziali");
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail as Category;
+      if (detail === "essenziali" || detail === "locali") setTab(detail);
+    };
+    window.addEventListener("mapspots:set-tab", handler);
+    return () => window.removeEventListener("mapspots:set-tab", handler);
+  }, []);
+
   const filtered = SPOTS.filter((s) => s.category === tab);
 
   return (
