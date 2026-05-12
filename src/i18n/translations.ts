@@ -251,7 +251,7 @@ export const translations = {
     },
     footer: "Enjoy your stay · Salento Flow",
   },
-} as const;
+};
 
 export type Lang = keyof typeof translations;
 export type Translation = (typeof translations)["it"];
