@@ -4,6 +4,7 @@ import { WifiCard } from "@/components/WifiCard";
 import { MapSpots } from "@/components/MapSpots";
 import { HouseManual } from "@/components/HouseManual";
 import { Contacts } from "@/components/Contacts";
+import { QuickAccess } from "@/components/QuickAccess";
 
 export const Route = createFileRoute("/")({
   component: Index,
