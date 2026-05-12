@@ -1,9 +1,11 @@
 import { Phone, MessageCircle, Siren, Stethoscope, Flame } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useT } from "@/i18n/LanguageContext";
+
+type ContactKey = "host" | "emergency" | "doctor" | "fire";
 
 interface Contact {
-  label: string;
-  sub: string;
+  key: ContactKey;
   number: string;
   icon: LucideIcon;
   emergency?: boolean;
@@ -11,31 +13,35 @@ interface Contact {
 }
 
 const CONTACTS: Contact[] = [
-  { label: "Host — Marco", sub: "Per qualsiasi necessità", number: "+393331234567", icon: Phone, whatsapp: true },
-  { label: "Emergenze (112)", sub: "Numero unico europeo", number: "112", icon: Siren, emergency: true },
-  { label: "Guardia Medica", sub: "Notturno e festivi", number: "0832123456", icon: Stethoscope },
-  { label: "Vigili del Fuoco", sub: "Solo in caso di pericolo", number: "115", icon: Flame, emergency: true },
+  { key: "host", number: "+393331234567", icon: Phone, whatsapp: true },
+  { key: "emergency", number: "112", icon: Siren, emergency: true },
+  { key: "doctor", number: "0832123456", icon: Stethoscope },
+  { key: "fire", number: "115", icon: Flame, emergency: true },
 ];
 
 export function Contacts() {
+  const { t } = useT();
   return (
     <section className="px-4">
       <header className="mb-4 flex items-center gap-2">
         <Phone className="h-5 w-5" style={{ color: "var(--olive)" }} />
-        <h2 className="text-2xl font-medium">Contatti</h2>
+        <h2 className="text-2xl font-medium">{t.contacts.title}</h2>
       </header>
       <div className="space-y-3">
         {CONTACTS.map((c) => {
           const Icon = c.icon;
+          const info = t.contacts.items[c.key];
           return (
             <div
-              key={c.label}
+              key={c.key}
               className="flex items-center gap-3 rounded-3xl border border-border bg-card px-4 py-3"
             >
               <div
                 className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
                 style={{
-                  backgroundColor: c.emergency ? "color-mix(in oklab, var(--destructive) 15%, transparent)" : "var(--accent)",
+                  backgroundColor: c.emergency
+                    ? "color-mix(in oklab, var(--destructive) 15%, transparent)"
+                    : "var(--accent)",
                 }}
               >
                 <Icon
@@ -44,8 +50,8 @@ export function Contacts() {
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium">{c.label}</p>
-                <p className="truncate text-xs text-muted-foreground">{c.sub}</p>
+                <p className="truncate text-sm font-medium">{info.label}</p>
+                <p className="truncate text-xs text-muted-foreground">{info.sub}</p>
               </div>
               <div className="flex gap-2">
                 {c.whatsapp && (
@@ -67,7 +73,7 @@ export function Contacts() {
                   }}
                 >
                   <Phone className="h-3.5 w-3.5" />
-                  Chiama
+                  {t.contacts.callBtn}
                 </a>
               </div>
             </div>

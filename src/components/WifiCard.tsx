@@ -1,10 +1,12 @@
 import { Wifi, Copy, Check } from "lucide-react";
 import { useState } from "react";
+import { useT } from "@/i18n/LanguageContext";
 
 const WIFI_NAME = "Casa_Salento_Flow";
 const WIFI_PASSWORD = "ulivo2024";
 
 export function WifiCard() {
+  const { t } = useT();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -26,7 +28,7 @@ export function WifiCard() {
             <Wifi className="h-5 w-5" style={{ color: "var(--olive)" }} />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Wi-Fi</p>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{t.wifi.label}</p>
             <p className="truncate text-sm font-medium">{WIFI_NAME}</p>
             <p className="truncate font-mono text-xs text-muted-foreground">{WIFI_PASSWORD}</p>
           </div>
@@ -39,7 +41,7 @@ export function WifiCard() {
             }}
           >
             {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-            {copied ? "Copiata" : "Copia"}
+            {copied ? t.wifi.copied : t.wifi.copy}
           </button>
         </div>
       </div>
