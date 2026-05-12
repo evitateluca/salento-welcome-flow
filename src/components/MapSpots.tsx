@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
 import { MapPin, ShoppingBasket, Cross, UtensilsCrossed, Waves, Sparkles, ExternalLink } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useT } from "@/i18n/LanguageContext";
 
 type Category = "essenziali" | "locali";
+type SpotKey = "conad" | "farmacia" | "leZie" | "natale" | "pescoluse" | "baiaTurchi" | "frantoio";
+type SpotType = "supermercato" | "farmacia" | "ristorante" | "spiaggia" | "chicca";
 
 interface Spot {
-  name: string;
-  desc: string;
+  key: SpotKey;
   category: Category;
-  type: "supermercato" | "farmacia" | "ristorante" | "spiaggia" | "chicca";
+  type: SpotType;
   mapsQuery: string;
 }
 
 const SPOTS: Spot[] = [
-  { name: "Supermercato Conad", desc: "A 5 min a piedi — aperto 8:00–21:00", category: "essenziali", type: "supermercato", mapsQuery: "Conad Lecce" },
-  { name: "Farmacia Centrale", desc: "Turno notturno il martedì", category: "essenziali", type: "farmacia", mapsQuery: "Farmacia Lecce centro" },
-  { name: "Trattoria Le Zie", desc: "Cucina salentina autentica — prenotare", category: "locali", type: "ristorante", mapsQuery: "Trattoria Le Zie Lecce" },
-  { name: "Pasticceria Natale", desc: "Pasticciotto leccese imperdibile", category: "locali", type: "ristorante", mapsQuery: "Pasticceria Natale Lecce" },
-  { name: "Spiaggia di Pescoluse", desc: "Le 'Maldive del Salento' — 40 min auto", category: "locali", type: "spiaggia", mapsQuery: "Pescoluse Maldive Salento" },
-  { name: "Baia dei Turchi", desc: "Acqua cristallina, pineta ombrosa", category: "locali", type: "spiaggia", mapsQuery: "Baia dei Turchi Otranto" },
-  { name: "Frantoio Ipogeo", desc: "Chicca nascosta — antico frantoio sotterraneo", category: "locali", type: "chicca", mapsQuery: "Frantoio ipogeo Salento" },
+  { key: "conad", category: "essenziali", type: "supermercato", mapsQuery: "Conad Lecce" },
+  { key: "farmacia", category: "essenziali", type: "farmacia", mapsQuery: "Farmacia Lecce centro" },
+  { key: "leZie", category: "locali", type: "ristorante", mapsQuery: "Trattoria Le Zie Lecce" },
+  { key: "natale", category: "locali", type: "ristorante", mapsQuery: "Pasticceria Natale Lecce" },
+  { key: "pescoluse", category: "locali", type: "spiaggia", mapsQuery: "Pescoluse Maldive Salento" },
+  { key: "baiaTurchi", category: "locali", type: "spiaggia", mapsQuery: "Baia dei Turchi Otranto" },
+  { key: "frantoio", category: "locali", type: "chicca", mapsQuery: "Frantoio ipogeo Salento" },
 ];
 
-const TYPE_META: Record<Spot["type"], { icon: LucideIcon; color: string }> = {
+const TYPE_META: Record<SpotType, { icon: LucideIcon; color: string }> = {
   supermercato: { icon: ShoppingBasket, color: "var(--olive)" },
   farmacia: { icon: Cross, color: "var(--destructive)" },
   ristorante: { icon: UtensilsCrossed, color: "var(--sun)" },
@@ -31,12 +33,18 @@ const TYPE_META: Record<Spot["type"], { icon: LucideIcon; color: string }> = {
 };
 
 export function MapSpots() {
+  const { t } = useT();
   const [tab, setTab] = useState<Category>("essenziali");
+  const [pulse, setPulse] = useState(false);
 
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail as Category;
-      if (detail === "essenziali" || detail === "locali") setTab(detail);
+      if (detail === "essenziali" || detail === "locali") {
+        setTab(detail);
+        setPulse(true);
+        setTimeout(() => setPulse(false), 900);
+      }
     };
     window.addEventListener("mapspots:set-tab", handler);
     return () => window.removeEventListener("mapspots:set-tab", handler);
@@ -48,32 +56,38 @@ export function MapSpots() {
     <section className="px-4">
       <header className="mb-4 flex items-center gap-2">
         <MapPin className="h-5 w-5" style={{ color: "var(--olive)" }} />
-        <h2 className="text-2xl font-medium">Mappa & Spot</h2>
+        <h2 className="text-2xl font-medium">{t.map.title}</h2>
       </header>
 
       <div className="mb-4 inline-flex rounded-full bg-muted p-1">
-        {(["essenziali", "locali"] as const).map((c) => (
-          <button
-            key={c}
-            onClick={() => setTab(c)}
-            className="rounded-full px-4 py-1.5 text-xs font-medium capitalize transition"
-            style={{
-              backgroundColor: tab === c ? "var(--primary)" : "transparent",
-              color: tab === c ? "var(--primary-foreground)" : "var(--muted-foreground)",
-            }}
-          >
-            {c === "essenziali" ? "Essenziali" : "Spot Locali"}
-          </button>
-        ))}
+        {(["essenziali", "locali"] as const).map((c) => {
+          const active = tab === c;
+          return (
+            <button
+              key={c}
+              onClick={() => setTab(c)}
+              className="rounded-full px-4 py-1.5 text-xs font-medium capitalize transition"
+              style={{
+                backgroundColor: active ? "var(--primary)" : "transparent",
+                color: active ? "var(--primary-foreground)" : "var(--muted-foreground)",
+                boxShadow: active && pulse ? "0 0 0 4px color-mix(in oklab, var(--olive) 30%, transparent)" : "none",
+                transition: "background-color 0.2s, color 0.2s, box-shadow 0.4s",
+              }}
+            >
+              {c === "essenziali" ? t.map.tabs.essentials : t.map.tabs.locals}
+            </button>
+          );
+        })}
       </div>
 
       <div className="space-y-3">
         {filtered.map((s) => {
           const meta = TYPE_META[s.type];
           const Icon = meta.icon;
+          const info = t.map.spots[s.key];
           return (
             <a
-              key={s.name}
+              key={s.key}
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.mapsQuery)}`}
               target="_blank"
               rel="noreferrer"
@@ -86,8 +100,8 @@ export function MapSpots() {
                 <Icon className="h-5 w-5" style={{ color: meta.color }} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium">{s.name}</p>
-                <p className="truncate text-xs text-muted-foreground">{s.desc}</p>
+                <p className="truncate text-sm font-medium">{info.name}</p>
+                <p className="truncate text-xs text-muted-foreground">{info.desc}</p>
               </div>
               <ExternalLink className="h-4 w-4 text-muted-foreground" />
             </a>

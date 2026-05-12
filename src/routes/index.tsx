@@ -5,6 +5,10 @@ import { MapSpots } from "@/components/MapSpots";
 import { HouseManual } from "@/components/HouseManual";
 import { Contacts } from "@/components/Contacts";
 import { QuickAccess } from "@/components/QuickAccess";
+import { TodaySuggestion } from "@/components/TodaySuggestion";
+import { LanguageProvider, useT } from "@/i18n/LanguageContext";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import heroHouse from "@/assets/hero-house.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -30,30 +34,63 @@ const GUEST_NAME = "Luca";
 
 function Index() {
   return (
+    <LanguageProvider>
+      <Page />
+    </LanguageProvider>
+  );
+}
+
+function Page() {
+  const { t } = useT();
+
+  return (
     <div className="min-h-screen bg-background pb-16">
       <WelcomeAnimation guestName={GUEST_NAME} />
+
+      {/* Top bar with language toggle */}
+      <div className="fixed right-3 top-3 z-50">
+        <LanguageToggle />
+      </div>
 
       <div id="wifi" className="pt-3 scroll-mt-4">
         <WifiCard />
       </div>
 
-      {/* Hero */}
-      <header className="px-5 pb-2 pt-10 text-center">
+      {/* Hero with house image */}
+      <header className="px-5 pb-2 pt-8 text-center">
+        <div className="relative mx-auto mb-7 aspect-[16/10] max-w-md overflow-hidden rounded-[2rem] border border-border">
+          <img
+            src={heroHouse}
+            alt="Casa nel Salento"
+            width={1536}
+            height={1024}
+            className="h-full w-full object-cover"
+          />
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: "linear-gradient(to top, color-mix(in oklab, var(--background) 85%, transparent), transparent 55%)",
+            }}
+          />
+        </div>
+
         <p className="text-[11px] uppercase tracking-[0.32em] text-muted-foreground">
-          Casa nel Salento
+          {t.hero.kicker}
         </p>
         <h1 className="mt-3 text-4xl font-medium leading-tight text-balance">
-          Ciao <span className="italic" style={{ color: "var(--olive)" }}>{GUEST_NAME}</span>,<br />
-          benvenuto a casa.
+          {t.hero.greetingPrefix}{" "}
+          <span className="italic" style={{ color: "var(--olive)" }}>{GUEST_NAME}</span>
+          {t.hero.greetingSuffix}
         </h1>
         <p className="mx-auto mt-4 max-w-md text-sm text-muted-foreground text-balance">
-          Tutto ciò che ti serve per vivere il Salento con calma — Wi-Fi, mappa, manuale di casa e contatti utili.
+          {t.hero.subtitle}
         </p>
         <div className="mx-auto mt-7 h-px w-16" style={{ backgroundColor: "var(--olive)" }} />
       </header>
 
       <main className="mt-8 space-y-12">
         <QuickAccess />
+        <TodaySuggestion />
         <div id="mappa" className="scroll-mt-20">
           <MapSpots />
         </div>
@@ -66,7 +103,7 @@ function Index() {
       </main>
 
       <footer className="mt-16 px-6 text-center">
-        <p className="text-xs text-muted-foreground">Buon soggiorno · Salento Flow</p>
+        <p className="text-xs text-muted-foreground">{t.footer}</p>
       </footer>
     </div>
   );
