@@ -9,6 +9,7 @@ import { TodaySuggestion } from "@/components/TodaySuggestion";
 import { LanguageProvider, useT } from "@/i18n/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import heroHouse from "@/assets/hero-house.jpg";
+import { houseConfig } from "@/config/house";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/")({
   }),
 });
 
-const GUEST_NAME = "Luca";
+const GUEST_NAME = houseConfig.guestName;
 
 function Index() {
   return (
