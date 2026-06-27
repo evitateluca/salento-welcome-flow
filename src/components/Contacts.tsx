@@ -1,23 +1,16 @@
 import { Phone, MessageCircle, Siren, Stethoscope, Flame } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useT } from "@/i18n/LanguageContext";
+import { houseConfig, type ContactConfig } from "@/config/house";
 
-type ContactKey = "host" | "emergency" | "doctor" | "fire";
+const ICONS: Record<ContactConfig["key"], LucideIcon> = {
+  host: Phone,
+  emergency: Siren,
+  doctor: Stethoscope,
+  fire: Flame,
+};
 
-interface Contact {
-  key: ContactKey;
-  number: string;
-  icon: LucideIcon;
-  emergency?: boolean;
-  whatsapp?: boolean;
-}
-
-const CONTACTS: Contact[] = [
-  { key: "host", number: "+393331234567", icon: Phone, whatsapp: true },
-  { key: "emergency", number: "112", icon: Siren, emergency: true },
-  { key: "doctor", number: "0832123456", icon: Stethoscope },
-  { key: "fire", number: "115", icon: Flame, emergency: true },
-];
+const CONTACTS = houseConfig.contacts.map((c) => ({ ...c, icon: ICONS[c.key] }));
 
 export function Contacts() {
   const { t } = useT();

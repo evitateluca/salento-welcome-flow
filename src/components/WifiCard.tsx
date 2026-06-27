@@ -1,9 +1,10 @@
 import { Wifi, Copy, Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useT } from "@/i18n/LanguageContext";
+import { houseConfig } from "@/config/house";
 
-const WIFI_NAME = "Casa_Salento_Flow";
-const WIFI_PASSWORD = "ulivo2024";
+const WIFI_NAME = houseConfig.wifi.ssid;
+const WIFI_PASSWORD = houseConfig.wifi.password;
 
 export function WifiCard() {
   const { t } = useT();
