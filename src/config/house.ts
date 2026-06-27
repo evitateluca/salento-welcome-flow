@@ -22,11 +22,11 @@ export interface ContactConfig {
 
 export const houseConfig = {
   guestName: "Luca",
-  hostName: "Marco",
+  hostName: "Mascia",
 
   wifi: {
-    ssid: "Casa_Salento_Flow",
-    password: "ulivo2024",
+    ssid: "WINDTRE-3D39D8",
+    password: "9fc8bu2kr9rcra8a",
   },
 
   // Centro mappa + zoom iniziale (coordinate della casa)
@@ -43,9 +43,9 @@ export const houseConfig = {
   },
 
   contacts: [
-    { key: "host", number: "+393331234567", whatsapp: true },
+    { key: "host", number: "+39 3204488439", whatsapp: true },
     { key: "emergency", number: "112", emergency: true },
-    { key: "doctor", number: "0832123456" },
+    { key: "medical guard", number: "0836 812361" },
     { key: "fire", number: "115", emergency: true },
   ] satisfies ContactConfig[],
 
