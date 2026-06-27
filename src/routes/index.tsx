@@ -52,9 +52,8 @@ function Page() {
         <LanguageToggle />
       </div>
 
-      <div id="wifi" className="pt-3 scroll-mt-4">
-        <WifiCard />
-      </div>
+      <WifiCard />
+
 
       {/* Hero with house image */}
       <header className="px-5 pb-2 pt-8 text-center">
