@@ -2,27 +2,10 @@ import { useEffect, useState } from "react";
 import { MapPin, ShoppingBasket, Cross, UtensilsCrossed, Waves, Sparkles, ExternalLink } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useT } from "@/i18n/LanguageContext";
+import { houseConfig, type SpotType } from "@/config/house";
+import { InteractiveMap } from "./InteractiveMap";
 
 type Category = "essenziali" | "locali";
-type SpotKey = "conad" | "farmacia" | "leZie" | "natale" | "pescoluse" | "baiaTurchi" | "frantoio";
-type SpotType = "supermercato" | "farmacia" | "ristorante" | "spiaggia" | "chicca";
-
-interface Spot {
-  key: SpotKey;
-  category: Category;
-  type: SpotType;
-  mapsQuery: string;
-}
-
-const SPOTS: Spot[] = [
-  { key: "conad", category: "essenziali", type: "supermercato", mapsQuery: "Conad Lecce" },
-  { key: "farmacia", category: "essenziali", type: "farmacia", mapsQuery: "Farmacia Lecce centro" },
-  { key: "leZie", category: "locali", type: "ristorante", mapsQuery: "Trattoria Le Zie Lecce" },
-  { key: "natale", category: "locali", type: "ristorante", mapsQuery: "Pasticceria Natale Lecce" },
-  { key: "pescoluse", category: "locali", type: "spiaggia", mapsQuery: "Pescoluse Maldive Salento" },
-  { key: "baiaTurchi", category: "locali", type: "spiaggia", mapsQuery: "Baia dei Turchi Otranto" },
-  { key: "frantoio", category: "locali", type: "chicca", mapsQuery: "Frantoio ipogeo Salento" },
-];
 
 const TYPE_META: Record<SpotType, { icon: LucideIcon; color: string }> = {
   supermercato: { icon: ShoppingBasket, color: "var(--olive)" },
@@ -50,7 +33,7 @@ export function MapSpots() {
     return () => window.removeEventListener("mapspots:set-tab", handler);
   }, []);
 
-  const filtered = SPOTS.filter((s) => s.category === tab);
+  const filtered = houseConfig.spots.filter((s) => s.category === tab);
 
   return (
     <section className="px-4">
@@ -80,11 +63,15 @@ export function MapSpots() {
         })}
       </div>
 
+      <div className="mb-4">
+        <InteractiveMap category={tab} />
+      </div>
+
       <div className="space-y-3">
         {filtered.map((s) => {
           const meta = TYPE_META[s.type];
           const Icon = meta.icon;
-          const info = t.map.spots[s.key];
+          const info = t.map.spots[s.key as keyof typeof t.map.spots];
           return (
             <a
               key={s.key}
