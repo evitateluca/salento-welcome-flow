@@ -47,6 +47,10 @@ export function QuickAccess() {
   const { t } = useT();
 
   const handleClick = (tile: Tile) => {
+    if (tile.key === "wifi") {
+      window.dispatchEvent(new CustomEvent("wifi:open"));
+      return;
+    }
     if (tile.tab) {
       window.dispatchEvent(new CustomEvent("mapspots:set-tab", { detail: tile.tab }));
     }
