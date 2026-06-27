@@ -8,7 +8,7 @@ import { QuickAccess } from "@/components/QuickAccess";
 import { TodaySuggestion } from "@/components/TodaySuggestion";
 import { LanguageProvider, useT } from "@/i18n/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import heroHouse from "@/assets/hero-house.jpg";
+import heroHouse from "@/assets/hero-house.avif";
 import { houseConfig } from "@/config/house";
 
 export const Route = createFileRoute("/")({
