@@ -7,8 +7,10 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-
 import appCss from "../styles.css?url";
+import { LanguageProvider } from "@/i18n/LanguageContext";
+import { HouseConfigProvider } from "@/config/houseContext";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -113,7 +115,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <LanguageProvider>
+        <HouseConfigProvider>
+          <Outlet />
+          <Toaster position="top-center" />
+        </HouseConfigProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

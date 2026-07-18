@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { MapPin, ShoppingBasket, Cross, UtensilsCrossed, Waves, Sparkles, ExternalLink } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useT } from "@/i18n/LanguageContext";
-import { houseConfig, type SpotType } from "@/config/house";
+import { useHouseConfig } from "@/config/houseContext";
+import type { SpotType } from "@/lib/houseConfigTypes";
 import { InteractiveMap } from "./InteractiveMap";
 
 type Category = "essenziali" | "locali";
@@ -16,7 +17,8 @@ const TYPE_META: Record<SpotType, { icon: LucideIcon; color: string }> = {
 };
 
 export function MapSpots() {
-  const { t } = useT();
+  const { t, lang } = useT();
+  const { config } = useHouseConfig();
   const [tab, setTab] = useState<Category>("essenziali");
   const [pulse, setPulse] = useState(false);
 
@@ -33,7 +35,7 @@ export function MapSpots() {
     return () => window.removeEventListener("mapspots:set-tab", handler);
   }, []);
 
-  const filtered = houseConfig.spots.filter((s) => s.category === tab);
+  const filtered = (config?.spots ?? []).filter((s) => s.category === tab);
 
   return (
     <section className="px-4">
@@ -46,49 +48,38 @@ export function MapSpots() {
         {(["essenziali", "locali"] as const).map((c) => {
           const active = tab === c;
           return (
-            <button
-              key={c}
-              onClick={() => setTab(c)}
+            <button key={c} onClick={() => setTab(c)}
               className="rounded-full px-4 py-1.5 text-xs font-medium capitalize transition"
               style={{
                 backgroundColor: active ? "var(--primary)" : "transparent",
                 color: active ? "var(--primary-foreground)" : "var(--muted-foreground)",
                 boxShadow: active && pulse ? "0 0 0 4px color-mix(in oklab, var(--olive) 30%, transparent)" : "none",
                 transition: "background-color 0.2s, color 0.2s, box-shadow 0.4s",
-              }}
-            >
+              }}>
               {c === "essenziali" ? t.map.tabs.essentials : t.map.tabs.locals}
             </button>
           );
         })}
       </div>
 
-      <div className="mb-4">
-        <InteractiveMap category={tab} />
-      </div>
+      <div className="mb-4"><InteractiveMap category={tab} /></div>
 
       <div className="space-y-3">
         {filtered.map((s) => {
           const meta = TYPE_META[s.type];
           const Icon = meta.icon;
-          const info = t.map.spots[s.key as keyof typeof t.map.spots];
+          const name = lang === "en" ? s.name_en : s.name_it;
+          const desc = lang === "en" ? s.desc_en : s.desc_it;
           return (
-            <a
-              key={s.key}
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.mapsQuery)}`}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-3 rounded-3xl border border-border bg-card px-4 py-3 transition active:scale-[0.98]"
-            >
-              <div
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
-                style={{ backgroundColor: "var(--accent)" }}
-              >
+            <a key={s.id} href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.maps_query)}`}
+              target="_blank" rel="noreferrer"
+              className="flex items-center gap-3 rounded-3xl border border-border bg-card px-4 py-3 transition active:scale-[0.98]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl" style={{ backgroundColor: "var(--accent)" }}>
                 <Icon className="h-5 w-5" style={{ color: meta.color }} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium">{info.name}</p>
-                <p className="truncate text-xs text-muted-foreground">{info.desc}</p>
+                <p className="truncate text-sm font-medium">{name}</p>
+                <p className="truncate text-xs text-muted-foreground">{desc}</p>
               </div>
               <ExternalLink className="h-4 w-4 text-muted-foreground" />
             </a>
