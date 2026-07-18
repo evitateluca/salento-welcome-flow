@@ -45,7 +45,7 @@ export const houseConfig = {
   contacts: [
     { key: "host", number: "+39 3204488439", whatsapp: true },
     { key: "emergency", number: "112", emergency: true },
-    { key: "medical guard", number: "0836 812361" },
+    { key: "doctor", number: "0836 812361" },
     { key: "fire", number: "115", emergency: true },
   ] satisfies ContactConfig[],
 
