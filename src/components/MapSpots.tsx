@@ -3,10 +3,10 @@ import { MapPin, ShoppingBasket, Cross, UtensilsCrossed, Waves, Sparkles, Extern
 import type { LucideIcon } from "lucide-react";
 import { useT } from "@/i18n/LanguageContext";
 import { useHouseConfig } from "@/config/houseContext";
-import type { SpotType } from "@/lib/houseConfigTypes";
+import type { SpotCategory, SpotType } from "@/lib/houseConfigTypes";
 import { InteractiveMap } from "./InteractiveMap";
 
-type Category = "essenziali" | "locali";
+const CATEGORIES: SpotCategory[] = ["supermercati", "ristoranti", "essenziali", "locali"];
 
 const TYPE_META: Record<SpotType, { icon: LucideIcon; color: string }> = {
   supermercato: { icon: ShoppingBasket, color: "var(--olive)" },
@@ -19,13 +19,13 @@ const TYPE_META: Record<SpotType, { icon: LucideIcon; color: string }> = {
 export function MapSpots() {
   const { t, lang } = useT();
   const { config } = useHouseConfig();
-  const [tab, setTab] = useState<Category>("essenziali");
+  const [tab, setTab] = useState<SpotCategory>("supermercati");
   const [pulse, setPulse] = useState(false);
 
   useEffect(() => {
     const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail as Category;
-      if (detail === "essenziali" || detail === "locali") {
+      const detail = (e as CustomEvent).detail as SpotCategory;
+      if (CATEGORIES.includes(detail)) {
         setTab(detail);
         setPulse(true);
         setTimeout(() => setPulse(false), 900);
@@ -44,19 +44,19 @@ export function MapSpots() {
         <h2 className="text-2xl font-medium">{t.map.title}</h2>
       </header>
 
-      <div className="mb-4 inline-flex rounded-full bg-muted p-1">
-        {(["essenziali", "locali"] as const).map((c) => {
+      <div className="mb-4 flex flex-wrap gap-1.5 rounded-3xl bg-muted p-1">
+        {CATEGORIES.map((c) => {
           const active = tab === c;
           return (
             <button key={c} onClick={() => setTab(c)}
-              className="rounded-full px-4 py-1.5 text-xs font-medium capitalize transition"
+              className="flex-1 rounded-full px-3 py-1.5 text-xs font-medium capitalize transition whitespace-nowrap"
               style={{
                 backgroundColor: active ? "var(--primary)" : "transparent",
                 color: active ? "var(--primary-foreground)" : "var(--muted-foreground)",
                 boxShadow: active && pulse ? "0 0 0 4px color-mix(in oklab, var(--olive) 30%, transparent)" : "none",
                 transition: "background-color 0.2s, color 0.2s, box-shadow 0.4s",
               }}>
-              {c === "essenziali" ? t.map.tabs.essentials : t.map.tabs.locals}
+              {t.map.tabs[c]}
             </button>
           );
         })}

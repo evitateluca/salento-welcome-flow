@@ -1,16 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { WelcomeAnimation } from "@/components/WelcomeAnimation";
 import { WifiCard } from "@/components/WifiCard";
 import { MapSpots } from "@/components/MapSpots";
 import { HouseManual } from "@/components/HouseManual";
 import { Contacts } from "@/components/Contacts";
+import { EventsList } from "@/components/EventsList";
 import { QuickAccess } from "@/components/QuickAccess";
 import { TodaySuggestion } from "@/components/TodaySuggestion";
 import { useT } from "@/i18n/LanguageContext";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import heroHouseFallback from "@/assets/hero-house.avif";
 import { useHouseConfig } from "@/config/houseContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Settings } from "lucide-react";
+
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -32,6 +36,14 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { t, lang } = useT();
   const { config, loading } = useHouseConfig();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setIsAdmin(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setIsAdmin(!!session));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
 
   if (loading) {
     return <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">…</div>;
@@ -47,11 +59,14 @@ function Index() {
       <WelcomeAnimation guestName={guestName} />
 
       <div className="fixed right-3 top-3 z-50 flex items-center gap-2">
-        <Link to="/admin" className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/80 backdrop-blur transition hover:bg-accent" aria-label="Admin">
-          <Settings className="h-4 w-4" style={{ color: "var(--olive)" }} />
-        </Link>
+        {isAdmin && (
+          <Link to="/admin" className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card/80 backdrop-blur transition hover:bg-accent" aria-label="Admin">
+            <Settings className="h-4 w-4" style={{ color: "var(--olive)" }} />
+          </Link>
+        )}
         <LanguageToggle />
       </div>
+
 
       <WifiCard />
 
@@ -76,9 +91,11 @@ function Index() {
         <QuickAccess />
         <TodaySuggestion />
         <div id="mappa" className="scroll-mt-20"><MapSpots /></div>
+        <div id="eventi" className="scroll-mt-20"><EventsList /></div>
         <div id="manuale" className="scroll-mt-20"><HouseManual /></div>
         <div id="contatti" className="scroll-mt-20"><Contacts /></div>
       </main>
+
 
       <footer className="mt-16 px-6 text-center">
         <p className="text-xs text-muted-foreground">{t.footer}</p>

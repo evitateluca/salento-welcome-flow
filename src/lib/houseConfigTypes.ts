@@ -1,6 +1,6 @@
 // Shape of the JSONB blob stored in public.house_config.data
 
-export type SpotCategory = "essenziali" | "locali";
+export type SpotCategory = "supermercati" | "ristoranti" | "essenziali" | "locali";
 export type SpotType = "supermercato" | "farmacia" | "ristorante" | "spiaggia" | "chicca";
 export type ContactKey = "host" | "emergency" | "doctor" | "fire";
 export type ManualIcon = "trash" | "snowflake" | "droplets" | "key" | "clock" | "cigarette" | "paw" | "book";
@@ -38,6 +38,17 @@ export interface ManualItemData {
   body_en: string;
 }
 
+export interface EventData {
+  id: string;
+  date: string; // ISO yyyy-mm-dd (optional format)
+  title_it: string;
+  title_en: string;
+  desc_it: string;
+  desc_en: string;
+  location: string;
+  maps_query?: string;
+}
+
 export interface HouseConfigData {
   guest_name: string;
   host_name: string;
@@ -53,4 +64,5 @@ export interface HouseConfigData {
   contacts: ContactData[];
   spots: SpotData[];
   manual: ManualItemData[];
+  events: EventData[];
 }

@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useHouseConfig } from "@/config/houseContext";
-import type { HouseConfigData, SpotData, ManualItemData, ContactData } from "@/lib/houseConfigTypes";
+import type { HouseConfigData, SpotData, ManualItemData, ContactData, EventData } from "@/lib/houseConfigTypes";
 import { toast } from "sonner";
 import { LogOut, Plus, Trash2, Save, Home } from "lucide-react";
 
@@ -26,7 +26,13 @@ function AdminPage() {
     })();
   }, [navigate]);
 
-  useEffect(() => { if (config) setDraft(structuredClone(config)); }, [config]);
+  useEffect(() => {
+    if (config) {
+      const clone = structuredClone(config);
+      if (!Array.isArray(clone.events)) clone.events = [];
+      setDraft(clone);
+    }
+  }, [config]);
 
   const signOut = async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); };
 
@@ -132,6 +138,20 @@ function AdminPage() {
           </div>
         </Section>
 
+        {/* EVENTS */}
+        <Section title="Eventi"
+          onAdd={() => upd({ events: [...(draft.events ?? []), newEvent()] })}>
+          <div className="space-y-4">
+            {(draft.events ?? []).map((ev, i) => (
+              <EventEditor key={i} event={ev}
+                onChange={(next) => upd({ events: (draft.events ?? []).map((x, j) => j === i ? next : x) })}
+                onDelete={() => upd({ events: (draft.events ?? []).filter((_, j) => j !== i) })} />
+            ))}
+          </div>
+        </Section>
+
+
+
         {/* CONTACTS */}
         <Section title="Contatti">
           <div className="space-y-4">
@@ -153,6 +173,10 @@ function newSpot(): SpotData {
 function newManual(): ManualItemData {
   return { id: crypto.randomUUID().slice(0, 8), icon: "book", title_it: "", title_en: "", body_it: "", body_en: "" };
 }
+function newEvent(): EventData {
+  return { id: crypto.randomUUID().slice(0, 8), date: "", title_it: "", title_en: "", desc_it: "", desc_en: "", location: "", maps_query: "" };
+}
+
 
 function Section({ title, children, onAdd }: { title: string; children: React.ReactNode; onAdd?: () => void }) {
   return (
@@ -213,9 +237,10 @@ function SpotEditor({ spot, onChange, onDelete }: { spot: SpotData; onChange: (s
         <button onClick={onDelete} className="text-destructive"><Trash2 className="h-4 w-4" /></button>
       </div>
       <Grid2>
-        <Select label="Categoria" value={spot.category} options={["essenziali", "locali"]} onChange={(v) => set("category", v as SpotData["category"])} />
+        <Select label="Categoria" value={spot.category} options={["supermercati", "ristoranti", "essenziali", "locali"]} onChange={(v) => set("category", v as SpotData["category"])} />
         <Select label="Tipo" value={spot.type} options={["supermercato", "farmacia", "ristorante", "spiaggia", "chicca"]} onChange={(v) => set("type", v as SpotData["type"])} />
       </Grid2>
+
       <Grid2>
         <Field label="Nome IT" value={spot.name_it} onChange={(v) => set("name_it", v)} />
         <Field label="Nome EN" value={spot.name_en} onChange={(v) => set("name_en", v)} />
@@ -280,6 +305,31 @@ function ContactEditor({ contact, onChange }: { contact: ContactData; onChange: 
           Emergenza
         </label>
       </div>
+    </div>
+  );
+}
+
+function EventEditor({ event, onChange, onDelete }: { event: EventData; onChange: (e: EventData) => void; onDelete: () => void }) {
+  const set = <K extends keyof EventData>(k: K, v: EventData[K]) => onChange({ ...event, [k]: v });
+  return (
+    <div className="rounded-2xl border border-border bg-background/60 p-3 space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-muted-foreground">#{event.id}</span>
+        <button onClick={onDelete} className="text-destructive"><Trash2 className="h-4 w-4" /></button>
+      </div>
+      <Grid2>
+        <Field label="Data (YYYY-MM-DD)" value={event.date} onChange={(v) => set("date", v)} placeholder="2026-08-15" />
+        <Field label="Luogo" value={event.location} onChange={(v) => set("location", v)} />
+      </Grid2>
+      <Grid2>
+        <Field label="Titolo IT" value={event.title_it} onChange={(v) => set("title_it", v)} />
+        <Field label="Titolo EN" value={event.title_en} onChange={(v) => set("title_en", v)} />
+      </Grid2>
+      <Grid2>
+        <Textarea label="Descrizione IT" value={event.desc_it} onChange={(v) => set("desc_it", v)} />
+        <Textarea label="Descrizione EN" value={event.desc_en} onChange={(v) => set("desc_en", v)} />
+      </Grid2>
+      <Field label="Google Maps query (opzionale)" value={event.maps_query ?? ""} onChange={(v) => set("maps_query", v)} />
     </div>
   );
 }
