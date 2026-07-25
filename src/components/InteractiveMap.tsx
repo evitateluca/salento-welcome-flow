@@ -13,7 +13,7 @@ const TYPE_COLOR: Record<SpotData["type"], string> = {
   chicca: "#7a8a4f",
 };
 
-interface Props { category: "essenziali" | "locali"; }
+interface Props { category: import("@/lib/houseConfigTypes").SpotCategory; }
 
 export function InteractiveMap({ category }: Props) {
   const { lang } = useT();
