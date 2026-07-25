@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useHouseConfig } from "@/config/houseContext";
-import type { HouseConfigData, SpotData, ManualItemData, ContactData } from "@/lib/houseConfigTypes";
+import type { HouseConfigData, SpotData, ManualItemData, ContactData, EventData } from "@/lib/houseConfigTypes";
 import { toast } from "sonner";
 import { LogOut, Plus, Trash2, Save, Home } from "lucide-react";
 
@@ -26,7 +26,13 @@ function AdminPage() {
     })();
   }, [navigate]);
 
-  useEffect(() => { if (config) setDraft(structuredClone(config)); }, [config]);
+  useEffect(() => {
+    if (config) {
+      const clone = structuredClone(config);
+      if (!Array.isArray(clone.events)) clone.events = [];
+      setDraft(clone);
+    }
+  }, [config]);
 
   const signOut = async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); };
 
@@ -213,9 +219,10 @@ function SpotEditor({ spot, onChange, onDelete }: { spot: SpotData; onChange: (s
         <button onClick={onDelete} className="text-destructive"><Trash2 className="h-4 w-4" /></button>
       </div>
       <Grid2>
-        <Select label="Categoria" value={spot.category} options={["essenziali", "locali"]} onChange={(v) => set("category", v as SpotData["category"])} />
+        <Select label="Categoria" value={spot.category} options={["supermercati", "ristoranti", "essenziali", "locali"]} onChange={(v) => set("category", v as SpotData["category"])} />
         <Select label="Tipo" value={spot.type} options={["supermercato", "farmacia", "ristorante", "spiaggia", "chicca"]} onChange={(v) => set("type", v as SpotData["type"])} />
       </Grid2>
+
       <Grid2>
         <Field label="Nome IT" value={spot.name_it} onChange={(v) => set("name_it", v)} />
         <Field label="Nome EN" value={spot.name_en} onChange={(v) => set("name_en", v)} />
