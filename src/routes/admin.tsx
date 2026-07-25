@@ -308,3 +308,28 @@ function ContactEditor({ contact, onChange }: { contact: ContactData; onChange: 
     </div>
   );
 }
+
+function EventEditor({ event, onChange, onDelete }: { event: EventData; onChange: (e: EventData) => void; onDelete: () => void }) {
+  const set = <K extends keyof EventData>(k: K, v: EventData[K]) => onChange({ ...event, [k]: v });
+  return (
+    <div className="rounded-2xl border border-border bg-background/60 p-3 space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-muted-foreground">#{event.id}</span>
+        <button onClick={onDelete} className="text-destructive"><Trash2 className="h-4 w-4" /></button>
+      </div>
+      <Grid2>
+        <Field label="Data (YYYY-MM-DD)" value={event.date} onChange={(v) => set("date", v)} placeholder="2026-08-15" />
+        <Field label="Luogo" value={event.location} onChange={(v) => set("location", v)} />
+      </Grid2>
+      <Grid2>
+        <Field label="Titolo IT" value={event.title_it} onChange={(v) => set("title_it", v)} />
+        <Field label="Titolo EN" value={event.title_en} onChange={(v) => set("title_en", v)} />
+      </Grid2>
+      <Grid2>
+        <Textarea label="Descrizione IT" value={event.desc_it} onChange={(v) => set("desc_it", v)} />
+        <Textarea label="Descrizione EN" value={event.desc_en} onChange={(v) => set("desc_en", v)} />
+      </Grid2>
+      <Field label="Google Maps query (opzionale)" value={event.maps_query ?? ""} onChange={(v) => set("maps_query", v)} />
+    </div>
+  );
+}
