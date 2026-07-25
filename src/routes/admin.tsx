@@ -159,6 +159,10 @@ function newSpot(): SpotData {
 function newManual(): ManualItemData {
   return { id: crypto.randomUUID().slice(0, 8), icon: "book", title_it: "", title_en: "", body_it: "", body_en: "" };
 }
+function newEvent(): EventData {
+  return { id: crypto.randomUUID().slice(0, 8), date: "", title_it: "", title_en: "", desc_it: "", desc_en: "", location: "", maps_query: "" };
+}
+
 
 function Section({ title, children, onAdd }: { title: string; children: React.ReactNode; onAdd?: () => void }) {
   return (
