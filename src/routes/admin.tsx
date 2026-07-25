@@ -138,6 +138,20 @@ function AdminPage() {
           </div>
         </Section>
 
+        {/* EVENTS */}
+        <Section title="Eventi"
+          onAdd={() => upd({ events: [...(draft.events ?? []), newEvent()] })}>
+          <div className="space-y-4">
+            {(draft.events ?? []).map((ev, i) => (
+              <EventEditor key={i} event={ev}
+                onChange={(next) => upd({ events: (draft.events ?? []).map((x, j) => j === i ? next : x) })}
+                onDelete={() => upd({ events: (draft.events ?? []).filter((_, j) => j !== i) })} />
+            ))}
+          </div>
+        </Section>
+
+
+
         {/* CONTACTS */}
         <Section title="Contatti">
           <div className="space-y-4">
