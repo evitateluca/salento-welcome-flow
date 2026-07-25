@@ -1,26 +1,27 @@
-import { Wifi, MapPin, ShoppingBasket, UtensilsCrossed, Waves, BookOpen, HelpCircle, Phone, Sparkles } from "lucide-react";
+import { Wifi, MapPin, ShoppingBasket, UtensilsCrossed, Waves, BookOpen, HelpCircle, Phone, Sparkles, CalendarDays, Cross } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useT } from "@/i18n/LanguageContext";
+import type { SpotCategory } from "@/lib/houseConfigTypes";
 
-type TileKey = "wifi" | "map" | "supermarkets" | "restaurants" | "beaches" | "localSpots" | "manual" | "rules" | "contacts";
+type TileKey = "wifi" | "map" | "supermarkets" | "restaurants" | "essentials" | "localSpots" | "events" | "manual" | "rules" | "contacts";
 
 interface Tile {
   key: TileKey;
   icon: LucideIcon;
   target: string;
-  tab?: "essenziali" | "locali";
+  tab?: SpotCategory;
   color?: string;
 }
 
 const TILES: Tile[] = [
   { key: "wifi", icon: Wifi, target: "wifi" },
   { key: "map", icon: MapPin, target: "mappa" },
-  { key: "supermarkets", icon: ShoppingBasket, target: "mappa", tab: "essenziali" },
-  { key: "restaurants", icon: UtensilsCrossed, target: "mappa", tab: "locali", color: "var(--sun)" },
-  { key: "beaches", icon: Waves, target: "mappa", tab: "locali", color: "var(--sea)" },
+  { key: "supermarkets", icon: ShoppingBasket, target: "mappa", tab: "supermercati" },
+  { key: "restaurants", icon: UtensilsCrossed, target: "mappa", tab: "ristoranti", color: "var(--sun)" },
+  { key: "essentials", icon: Cross, target: "mappa", tab: "essenziali", color: "var(--destructive)" },
   { key: "localSpots", icon: Sparkles, target: "mappa", tab: "locali" },
+  { key: "events", icon: CalendarDays, target: "eventi" },
   { key: "manual", icon: BookOpen, target: "manuale" },
-  { key: "rules", icon: HelpCircle, target: "manuale" },
   { key: "contacts", icon: Phone, target: "contatti" },
 ];
 

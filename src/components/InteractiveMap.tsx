@@ -72,8 +72,17 @@ export function InteractiveMap({ category }: Props) {
       bounds.extend([s.lng, s.lat]);
     });
 
-    if (spots.length > 0) map.fitBounds(bounds, { padding: 60, maxZoom: 11.5, duration: 800 });
+    if (spots.length > 1) {
+      map.fitBounds(bounds, { padding: 60, maxZoom: config.map.zoom, duration: 800 });
+    } else {
+      map.easeTo({
+        center: spots.length === 1 ? [spots[0].lng, spots[0].lat] : [config.map.center_lng, config.map.center_lat],
+        zoom: config.map.zoom,
+        duration: 800,
+      });
+    }
   }, [category, lang, config]);
+
 
   return <div ref={containerRef} className="h-72 w-full overflow-hidden rounded-3xl border border-border" aria-label="Mappa" />;
 }
