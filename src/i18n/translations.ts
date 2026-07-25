@@ -18,8 +18,9 @@ export const translations = {
         map: "Mappa",
         supermarkets: "Supermercati",
         restaurants: "Ristoranti",
-        beaches: "Spiagge",
+        essentials: "Essenziali",
         localSpots: "Spot locali",
+        events: "Eventi",
         manual: "Manuale casa",
         rules: "Regole & FAQ",
         contacts: "Contatti",
@@ -69,59 +70,23 @@ export const translations = {
     },
     map: {
       title: "Mappa & Spot",
-      tabs: { essentials: "Essenziali", locals: "Spot Locali" },
-      spots: {
-        conad: { name: "Supermercato Conad", desc: "A 5 min a piedi — aperto 8:00–21:00" },
-        farmacia: { name: "Farmacia Centrale", desc: "Turno notturno il martedì" },
-        leZie: { name: "Trattoria Le Zie", desc: "Cucina salentina autentica — prenotare" },
-        natale: { name: "Pasticceria Natale", desc: "Pasticciotto leccese imperdibile" },
-        pescoluse: { name: "Spiaggia di Pescoluse", desc: "Le 'Maldive del Salento' — 40 min auto" },
-        baiaTurchi: { name: "Baia dei Turchi", desc: "Acqua cristallina, pineta ombrosa" },
-        frantoio: { name: "Frantoio Ipogeo", desc: "Chicca nascosta — antico frantoio sotterraneo" },
+      tabs: {
+        supermercati: "Supermercati",
+        ristoranti: "Ristoranti",
+        essenziali: "Essenziali",
+        locali: "Spot locali",
       },
+    },
+    events: {
+      title: "Eventi",
+      empty: "Nessun evento in programma al momento.",
     },
     manual: {
       title: "Manuale & FAQ",
-      items: {
-        trash: {
-          title: "Raccolta differenziata",
-          body: "Lunedì: organico. Martedì: plastica e metalli. Giovedì: carta. Sabato: vetro. I bidoni sono nel cortile — esporre entro le 6:00.",
-        },
-        ac: {
-          title: "Aria condizionata",
-          body: "Telecomando sul comodino. Ti chiediamo di tenerla a 24°C e di spegnerla quando esci, per rispetto dell'ambiente e per il comfort serale.",
-        },
-        water: {
-          title: "Acqua calda",
-          body: "Lo scaldabagno si attiva automaticamente. Per docce molto lunghe, attendi 30 min tra un utilizzo e l'altro.",
-        },
-        keys: {
-          title: "Chiavi & accesso",
-          body: "Due mazzi di chiavi sul tavolo d'ingresso. Il portone si chiude automaticamente — porta sempre le chiavi con te.",
-        },
-        checkout: {
-          title: "Check-out",
-          body: "Entro le 10:00. Lascia le chiavi sul tavolo della cucina e chiudi semplicemente la porta dietro di te.",
-        },
-        smoke: {
-          title: "No fumo in casa",
-          body: "È possibile fumare in terrazza — trovi un posacenere sul tavolino esterno.",
-        },
-        pets: {
-          title: "Animali",
-          body: "Pet-friendly! Ciotole e copertina nello sgabuzzino. Per favore, non far salire gli animali sul divano bianco.",
-        },
-      },
     },
     contacts: {
       title: "Contatti",
       callBtn: "Chiama",
-      items: {
-        host: { label: "Host — Marco", sub: "Per qualsiasi necessità" },
-        emergency: { label: "Emergenze (112)", sub: "Numero unico europeo" },
-        doctor: { label: "Guardia Medica", sub: "Notturno e festivi" },
-        fire: { label: "Vigili del Fuoco", sub: "Solo in caso di pericolo" },
-      },
     },
     footer: "Buon soggiorno · Salento Flow",
   },
@@ -144,8 +109,9 @@ export const translations = {
         map: "Map",
         supermarkets: "Supermarkets",
         restaurants: "Restaurants",
-        beaches: "Beaches",
+        essentials: "Essentials",
         localSpots: "Local gems",
+        events: "Events",
         manual: "House manual",
         rules: "Rules & FAQ",
         contacts: "Contacts",
@@ -195,59 +161,23 @@ export const translations = {
     },
     map: {
       title: "Map & Spots",
-      tabs: { essentials: "Essentials", locals: "Local gems" },
-      spots: {
-        conad: { name: "Conad Supermarket", desc: "5 min walk — open 8:00–21:00" },
-        farmacia: { name: "Central Pharmacy", desc: "Night shift on Tuesdays" },
-        leZie: { name: "Trattoria Le Zie", desc: "Authentic Salento cuisine — booking required" },
-        natale: { name: "Pasticceria Natale", desc: "The unmissable pasticciotto" },
-        pescoluse: { name: "Pescoluse Beach", desc: "The 'Maldives of Salento' — 40 min drive" },
-        baiaTurchi: { name: "Baia dei Turchi", desc: "Crystal water, shady pine forest" },
-        frantoio: { name: "Underground Oil Mill", desc: "Hidden gem — ancient subterranean mill" },
+      tabs: {
+        supermercati: "Supermarkets",
+        ristoranti: "Restaurants",
+        essenziali: "Essentials",
+        locali: "Local gems",
       },
+    },
+    events: {
+      title: "Events",
+      empty: "No upcoming events right now.",
     },
     manual: {
       title: "Manual & FAQ",
-      items: {
-        trash: {
-          title: "Recycling",
-          body: "Mon: organic. Tue: plastic & metals. Thu: paper. Sat: glass. Bins are in the courtyard — set out by 6:00 AM.",
-        },
-        ac: {
-          title: "Air conditioning",
-          body: "Remote on the bedside table. Please keep it at 24°C and switch off when you leave — for the planet and a cooler evening.",
-        },
-        water: {
-          title: "Hot water",
-          body: "The boiler switches on automatically. For long showers, wait 30 min between uses.",
-        },
-        keys: {
-          title: "Keys & access",
-          body: "Two key sets on the entrance table. The main door locks automatically — always carry your keys.",
-        },
-        checkout: {
-          title: "Check-out",
-          body: "By 10:00 AM. Leave the keys on the kitchen table and just pull the door closed behind you.",
-        },
-        smoke: {
-          title: "No smoking indoors",
-          body: "Smoking is allowed on the terrace — there's an ashtray on the outdoor table.",
-        },
-        pets: {
-          title: "Pets",
-          body: "Pet-friendly! Bowls and a blanket in the closet. Please keep pets off the white sofa.",
-        },
-      },
     },
     contacts: {
       title: "Contacts",
       callBtn: "Call",
-      items: {
-        host: { label: "Host — Marco", sub: "For anything you need" },
-        emergency: { label: "Emergency (112)", sub: "European emergency number" },
-        doctor: { label: "On-call Doctor", sub: "Nights & holidays" },
-        fire: { label: "Fire Brigade", sub: "Only in case of danger" },
-      },
     },
     footer: "Enjoy your stay · Salento Flow",
   },
