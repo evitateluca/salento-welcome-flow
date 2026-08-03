@@ -66,4 +66,5 @@ export interface HouseConfigData {
   spots: SpotData[];
   manual: ManualItemData[];
   events: EventData[];
+  events_calendar?: boolean;
 }

@@ -141,6 +141,11 @@ function AdminPage() {
         {/* EVENTS */}
         <Section title="Eventi"
           onAdd={() => upd({ events: [...(draft.events ?? []), newEvent()] })}>
+          <label className="flex items-center gap-2 text-xs">
+            <input type="checkbox" checked={!!draft.events_calendar}
+              onChange={(e) => upd({ events_calendar: e.target.checked })} />
+            Vista calendario (invece della lista)
+          </label>
           <div className="space-y-4">
             {(draft.events ?? []).map((ev, i) => (
               <EventEditor key={i} event={ev}
