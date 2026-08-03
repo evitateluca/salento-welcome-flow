@@ -23,12 +23,11 @@ export function EventsList() {
           {events.map((e) => {
             const title = lang === "en" ? e.title_en : e.title_it;
             const desc = lang === "en" ? e.desc_en : e.desc_it;
-            const date = e.date
-              ? new Date(e.date).toLocaleDateString(lang === "en" ? "en-GB" : "it-IT", {
-                  day: "2-digit",
-                  month: "short",
-                })
-              : "";
+            const locale = lang === "en" ? "en-GB" : "it-IT";
+            const fmt = (d: string) =>
+              new Date(d).toLocaleDateString(locale, { day: "2-digit", month: "short" });
+            const start = e.date ? fmt(e.date) : "";
+            const end = e.date_end && e.date_end !== e.date ? fmt(e.date_end) : "";
             const href = e.maps_query
               ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.maps_query)}`
               : undefined;
@@ -40,26 +39,38 @@ export function EventsList() {
               <Wrapper
                 key={e.id}
                 {...wrapperProps}
-                className="flex items-center gap-3 rounded-3xl border border-border bg-card px-4 py-3 transition active:scale-[0.98]"
+                className="flex items-start gap-3 rounded-3xl border border-border bg-card px-4 py-3 transition active:scale-[0.98]"
               >
                 <div
-                  className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-2xl text-center"
+                  className="flex h-14 w-14 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl px-1 text-center"
                   style={{ backgroundColor: "var(--accent)", color: "var(--olive)" }}
                 >
-                  {date ? (
-                    <span className="text-[11px] font-medium leading-tight">{date}</span>
+                  {start ? (
+                    <>
+                      <span className="text-[11px] font-medium leading-tight">{start}</span>
+                      {end && (
+                        <>
+                          <span className="text-[9px] leading-none opacity-70">→</span>
+                          <span className="text-[11px] font-medium leading-tight">{end}</span>
+                        </>
+                      )}
+                    </>
                   ) : (
                     <CalendarDays className="h-5 w-5" />
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium">{title}</p>
-                  <p className="truncate text-xs text-muted-foreground">
-                    {desc}
-                    {e.location ? ` · ${e.location}` : ""}
-                  </p>
+                  <p className="text-sm font-medium">{title}</p>
+                  {desc && (
+                    <p className="mt-0.5 whitespace-pre-line break-words text-xs text-muted-foreground">
+                      {desc}
+                    </p>
+                  )}
+                  {e.location && (
+                    <p className="mt-0.5 break-words text-xs text-muted-foreground">{e.location}</p>
+                  )}
                 </div>
-                {href && <ExternalLink className="h-4 w-4 text-muted-foreground" />}
+                {href && <ExternalLink className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" />}
               </Wrapper>
             );
           })}

@@ -41,6 +41,7 @@ export interface ManualItemData {
 export interface EventData {
   id: string;
   date: string; // ISO yyyy-mm-dd (optional format)
+  date_end?: string; // ISO yyyy-mm-dd, optional multi-day end date
   title_it: string;
   title_en: string;
   desc_it: string;

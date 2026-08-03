@@ -174,7 +174,7 @@ function newManual(): ManualItemData {
   return { id: crypto.randomUUID().slice(0, 8), icon: "book", title_it: "", title_en: "", body_it: "", body_en: "" };
 }
 function newEvent(): EventData {
-  return { id: crypto.randomUUID().slice(0, 8), date: "", title_it: "", title_en: "", desc_it: "", desc_en: "", location: "", maps_query: "" };
+  return { id: crypto.randomUUID().slice(0, 8), date: "", date_end: "", title_it: "", title_en: "", desc_it: "", desc_en: "", location: "", maps_query: "" };
 }
 
 
@@ -318,9 +318,10 @@ function EventEditor({ event, onChange, onDelete }: { event: EventData; onChange
         <button onClick={onDelete} className="text-destructive"><Trash2 className="h-4 w-4" /></button>
       </div>
       <Grid2>
-        <Field label="Data (YYYY-MM-DD)" value={event.date} onChange={(v) => set("date", v)} placeholder="2026-08-15" />
-        <Field label="Luogo" value={event.location} onChange={(v) => set("location", v)} />
+        <Field label="Data inizio (YYYY-MM-DD)" value={event.date} onChange={(v) => set("date", v)} placeholder="2026-08-15" />
+        <Field label="Data fine (opzionale)" value={event.date_end ?? ""} onChange={(v) => set("date_end", v)} placeholder="2026-08-17" />
       </Grid2>
+      <Field label="Luogo" value={event.location} onChange={(v) => set("location", v)} />
       <Grid2>
         <Field label="Titolo IT" value={event.title_it} onChange={(v) => set("title_it", v)} />
         <Field label="Titolo EN" value={event.title_en} onChange={(v) => set("title_en", v)} />
