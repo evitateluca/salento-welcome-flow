@@ -62,13 +62,14 @@ export function TodaySuggestion() {
 
   useEffect(() => {
     let cancelled = false;
+    // Uggiano la Chiesa (LE)
     const url =
-      "https://api.open-meteo.com/v1/forecast?latitude=40.355&longitude=18.172&daily=weather_code,temperature_2m_max,wind_speed_10m_max&timezone=Europe%2FRome&forecast_days=1";
+      "https://api.open-meteo.com/v1/forecast?latitude=40.1128&longitude=18.4642&current=weather_code&daily=weather_code,temperature_2m_max,wind_speed_10m_max&timezone=Europe%2FRome&forecast_days=1";
     fetch(url)
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((d) => {
         if (cancelled) return;
-        const code = d?.daily?.weather_code?.[0] ?? 0;
+        const code = d?.current?.weather_code ?? d?.daily?.weather_code?.[0] ?? 0;
         const tempMax = Math.round(d?.daily?.temperature_2m_max?.[0] ?? 0);
         const wind = Math.round(d?.daily?.wind_speed_10m_max?.[0] ?? 0);
         const condition = mapCondition(code);
