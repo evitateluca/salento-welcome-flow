@@ -2,12 +2,12 @@ export const translations = {
   it: {
     welcome: {
       kicker: "Salento Flow",
-      line1: "Benvenuto a Casa,",
+      line1: "Benvenuti a Casa,",
     },
     hero: {
       kicker: "Casa nel Salento",
       greetingPrefix: "Ciao",
-      greetingSuffix: ", benvenuto a casa.",
+      greetingSuffix: ", benvenuti a casa.",
       subtitle:
         "Tutto ciò che ti serve per vivere il Salento con calma — Wi-Fi, mappa, manuale di casa e contatti utili.",
     },
